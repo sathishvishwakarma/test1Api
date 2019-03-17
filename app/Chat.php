@@ -9,4 +9,9 @@ class Chat extends Model
     ];
     protected $table = 'chats';
     protected $fillable = ['user_id', 'friend_id', 'chat'];
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'id','user_id');
+    }
 }

@@ -84,12 +84,26 @@ class ChatController extends Controller
     }
 
     public function getChat($userID,$friendId) {
-        $user = app(User::class);
-        $messageDetails = $user->where('id',$userID)->with(['chats' => function($query) use($friendId) {
-            $query->where('friend_id',$friendId);
+
+        $chats = Chat::where(function ($query) use ($friendId,$userID) {
+            $query->where('user_id', '=', $userID)->where('friend_id', '=', $friendId);
+        })->orWhere(function ($query) use ($friendId,$userID) {
+            $query->where('user_id', '=', $friendId)->where('friend_id', '=', $userID);
+        })->with(['user' => function($query) {
+            $query->select('id','name','profile_img');
         }])->get();
 
-        return $messageDetails;
+        return $chats;
+
+//        $user = app(User::class);
+//        $messageDetails = $user->where('id',$userID)->with(['chats' => function($query) use($friendId,$userID) {
+//            $query->where('user_id', '=', $userID)->where('friend_id', '=', $friendId)
+//                  ->orWhere(function($query) use($friendId,$userID) {
+//                      $query->where('user_id', '=', $friendId)->where('friend_id', '=', $userID);
+//                  });
+//        }])->get();
+
+//        return $messageDetails;
     }
 
     public function sendChat(Request $request) {

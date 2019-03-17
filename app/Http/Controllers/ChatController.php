@@ -11,10 +11,14 @@ class ChatController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($userId)
     {
-        $friends = Auth::user()->friends();
-        return view('chat.index')->withFriends($friends);
+//        $friends = Auth::user()->friends();
+//        return view('chat.index')->withFriends($friends);
+        $user  = User::where('id',$userId)->first();
+        $friends = $user->friends();
+        return $friends;
+        //return view('chat.index')->withFriends($friends);
     }
     /**
      * Show the form for creating a new resource.
@@ -41,10 +45,11 @@ class ChatController extends Controller
      * @param  \App\Chat  $chat
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($userId)
     {
-        $friend = User::find($id);
-        return view('chat.show')->withFriend($friend);
+        $friend = User::where('id',$userId)->first();
+        return $friend;
+        //return view('chat.show')->withFriend($friend);
     }
     /**
      * Show the form for editing the specified resource.
@@ -77,14 +82,16 @@ class ChatController extends Controller
     {
         //
     }
-    public function getChat($id) {
-        $chats = Chat::where(function ($query) use ($id) {
-            $query->where('user_id', '=', Auth::user()->id)->where('friend_id', '=', $id);
-        })->orWhere(function ($query) use ($id) {
-            $query->where('user_id', '=', $id)->where('friend_id', '=', Auth::user()->id);
-        })->get();
-        return $chats;
+
+    public function getChat($userID,$friendId) {
+        $user = app(User::class);
+        $messageDetails = $user->where('id',$userID)->with(['chats' => function($query) use($friendId) {
+            $query->where('friend_id',$friendId);
+        }])->get();
+
+        return $messageDetails;
     }
+
     public function sendChat(Request $request) {
         Chat::create([
             'user_id' => $request->user_id,
@@ -92,6 +99,6 @@ class ChatController extends Controller
             'chat' => $request->chat
         ]);
 
-        return [];
+        return ['sathishashahsaishiasas'];
     }
 }

@@ -7,5 +7,6 @@ class Chat extends Model
     protected $dispatchesEvents = [
         'created' => BroadcastChat::class
     ];
+    protected $table = 'chats';
     protected $fillable = ['user_id', 'friend_id', 'chat'];
 }

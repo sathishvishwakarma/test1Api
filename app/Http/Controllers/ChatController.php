@@ -13,12 +13,9 @@ class ChatController extends Controller
      */
     public function index($userId)
     {
-//        $friends = Auth::user()->friends();
-//        return view('chat.index')->withFriends($friends);
         $user  = User::where('id',$userId)->first();
         $friends = $user->friends();
         return $friends;
-        //return view('chat.index')->withFriends($friends);
     }
     /**
      * Show the form for creating a new resource.
@@ -49,7 +46,6 @@ class ChatController extends Controller
     {
         $friend = User::where('id',$userId)->first();
         return $friend;
-        //return view('chat.show')->withFriend($friend);
     }
     /**
      * Show the form for editing the specified resource.
@@ -94,16 +90,6 @@ class ChatController extends Controller
         }])->get();
 
         return $chats;
-
-//        $user = app(User::class);
-//        $messageDetails = $user->where('id',$userID)->with(['chats' => function($query) use($friendId,$userID) {
-//            $query->where('user_id', '=', $userID)->where('friend_id', '=', $friendId)
-//                  ->orWhere(function($query) use($friendId,$userID) {
-//                      $query->where('user_id', '=', $friendId)->where('friend_id', '=', $userID);
-//                  });
-//        }])->get();
-
-//        return $messageDetails;
     }
 
     public function sendChat(Request $request) {
@@ -113,6 +99,6 @@ class ChatController extends Controller
             'chat' => $request->chat
         ]);
 
-        return ['sathishashahsaishiasas'];
+        return [];
     }
 }

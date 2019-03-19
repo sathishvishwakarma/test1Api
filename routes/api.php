@@ -17,8 +17,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/friends/{userId}', 'ChatController@index');//->middleware('auth')->name('chat.index');
-Route::get('/{userId}', 'ChatController@show');//->middleware('auth')->name('chat.show');
-Route::post('/getMessage/{userID}/{friendId}', 'ChatController@getChat');//->middleware('auth');
-Route::post('/chat/sendChat', 'ChatController@sendChat');//->middleware('auth');
+Route::get('/friends/{userId}', 'ChatController@index');
+Route::get('/{userId}', 'ChatController@show');
+Route::post('/getMessage/{userID}/{friendId}', 'ChatController@getChat');
+Route::post('/getLastMessage/{userID}/{friendId}', 'ChatController@getLastChat');
+Route::post('/chat/sendChat', 'ChatController@sendChat');
 
